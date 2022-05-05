@@ -1,0 +1,65 @@
+{% extends "layout.html" %} 
+
+{% block title %} Buy {% endblock %} 
+
+{% block content %} 
+<div class="container text-center" style="width: 20%">
+  <h1 class="title h3 mb-3">Buy</h1>
+  <br>
+  <form method="POST" action="/buy" class="form-quote">
+
+    <div class="input">
+      {{ form.stock.label()}}
+      {{ form.stock(class="form-control", placeholder="Stock") }}
+    </div>
+    <div class="input">
+      {{ form.shares.label()}}
+      {{ form.shares(class="form-control", placeholder="Number of Shares") }}
+    </div>
+
+    <br>
+
+      {{ form.quote(class="btn btn-block btn-outline-primary submit ")}}
+
+    <br>
+
+  </form>
+</div>
+
+{% if quotes %}
+
+
+  <table class="table table-hover table-dark">
+      <tr>
+          <th>Stock Symbol</th>
+          <th>Stock Name</th>
+          <th>Shares</th>
+          <th>Price</th>
+          <th>Total Cost</th>
+          <th>Cash after buy</th>
+          <th>Options</th>
+      </tr>
+      {% for quote in quotes %}
+      {% include "buy-modal.html" %}
+      <tr>
+          <td>
+            {{quote.symbol}}
+          </td>
+          <td >{{quote.name}}</td>
+          <td>
+            {{quote.shares}}
+          </td>
+          <td>{{quote.price | usd }}</td>
+          <td>{{(quote.price * quote.shares) | usd }}</td>
+          <td>{{(av_cash - (quote.price * quote.shares)) | usd }}</td>
+          <td>
+              <button class="btn btn-info" data-toggle="modal" data-target="#info-modal-{{quote.symbol}}">Info</button>
+              <button class="btn btn-success" data-toggle="modal" data-target="#buy-modal-{{quote.symbol}}">Buy</button>
+          </td>
+      </tr>
+      {% endfor %}
+  </table>
+
+{% endif %}
+
+{% endblock %}

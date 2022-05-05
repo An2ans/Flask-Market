@@ -1,0 +1,55 @@
+<style>
+  .modal-content{
+    background-color: #212121;
+  }
+</style>
+
+
+<!-- Info Modal -->
+<div class="modal fade" id="info-modal-{{quote.symbol}}" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">{{quote.symbol}}:{{quote.name}}</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Price: {{quote.price | usd}}</p>
+        <p>Shares: {{quote.shares}}</p>
+        <p>Total: {{(quote.shares * quote.price) | usd }}</p>
+        <p>Already in wallet: {{quote.shares_wallet}} shares</p>
+        <p>Price bought:  {{quote.price_paid | usd}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Sell Modal -->
+<div class="modal fade" id="sell-modal-{{quote.symbol}}" tabindex="-1" aria-labelledby="sellModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sellModalLabel">{{quote.name}}</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        Are you sure you want to sell {{quote.shares}} shares of {{quote.name}} for a total of {{(quote.price * quote.shares) | usd}}$ ?
+      </div>
+      <div class="modal-footer">
+        <form method="POST">
+          <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+          {{ form.hidden_tag() }}
+          <input type="hidden" value="{{quote.symbol}}" name="stock_to_sell" />
+          <input type="hidden" value="{{quote.price}}" name="price_to_sell" />
+          <input type="hidden" value="{{quote.shares}}" name="shares_to_sell" />
+          {{form.submit(class="btn btn-outline-success")}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
